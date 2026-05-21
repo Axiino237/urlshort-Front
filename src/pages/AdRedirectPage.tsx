@@ -33,6 +33,20 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
   const [popunderOpen, setPopunderOpen] = useState(false);
   const [showDirectLinkOverlay, setShowDirectLinkOverlay] = useState(false);
 
+  // Dynamically inject Monetag verification meta tag only on this page
+  useEffect(() => {
+    const meta = document.createElement('meta');
+    meta.name = 'monetag';
+    meta.content = 'cd8d06409c3d21e1c721283956aa3676';
+    document.head.appendChild(meta);
+
+    return () => {
+      if (document.head.contains(meta)) {
+        document.head.removeChild(meta);
+      }
+    };
+  }, []);
+
   // Extract query code
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
