@@ -32,19 +32,25 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
   const [showVignette, setShowVignette] = useState(false);
   const [popunderOpen, setPopunderOpen] = useState(false);
   const [showDirectLinkOverlay, setShowDirectLinkOverlay] = useState(false);
-  const scriptContainerRef = React.useRef<HTMLDivElement>(null);
 
-  // Dynamically load Monetag script only inside this page structure
+  // Dynamically load Monetag script only inside this page structure when checks complete
   useEffect(() => {
-    if (scriptContainerRef.current) {
-      const script = document.createElement('script');
+    let script: HTMLScriptElement | null = null;
+    if (!checking) {
+      script = document.createElement('script');
       script.src = "https://quge5.com/88/tag.min.js";
       script.setAttribute('data-zone', '241593');
       script.setAttribute('data-cfasync', 'false');
       script.async = true;
-      scriptContainerRef.current.appendChild(script);
+      document.body.appendChild(script);
     }
-  }, []);
+
+    return () => {
+      if (script && document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, [checking]);
 
 
   // Extract query code
@@ -632,9 +638,6 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
           </div>
         </div>
       )}
-
-      {/* -------------------- DYNAMIC SCRIPT CONTAINER -------------------- */}
-      <div ref={scriptContainerRef}></div>
 
     </div>
   );
