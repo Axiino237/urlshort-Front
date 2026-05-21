@@ -5,6 +5,8 @@ import {
   PlayCircle
 } from 'lucide-react';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://urlshort-back.onrender.com';
+
 interface LandingPageProps {
   onNavigate: (page: string) => void;
 }
@@ -41,7 +43,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
   const copyToClipboard = () => {
     if (shortenedUrl) {
-      navigator.clipboard.writeText(`http://localhost:5173/s/${shortenedUrl.shortCode}`);
+      navigator.clipboard.writeText(`${BACKEND_URL}/s/${shortenedUrl.shortCode}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
@@ -110,7 +112,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                     rel="noreferrer"
                     className="font-bold text-sm text-accent-cyan hover:underline truncate block"
                   >
-                    http://localhost:5173/s/{shortenedUrl.shortCode}
+                    {BACKEND_URL}/s/{shortenedUrl.shortCode}
                   </a>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">

@@ -6,6 +6,8 @@ import {
   ExternalLink, AlertTriangle, Play
 } from 'lucide-react';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://urlshort-back.onrender.com';
+
 interface DashboardPageProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -112,7 +114,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ activeTab, setActi
 
   // Copy Clipboard Link
   const copyLink = (code: string, id: string) => {
-    navigator.clipboard.writeText(`http://localhost:5173/s/${code}`);
+    navigator.clipboard.writeText(`${BACKEND_URL}/s/${code}`);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -278,7 +280,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ activeTab, setActi
                             rel="noreferrer"
                             className="hover:underline flex items-center gap-1.5"
                           >
-                            <span>http://localhost:5173/s/{link.shortCode}</span>
+                            <span>{BACKEND_URL}/s/{link.shortCode}</span>
                             <ExternalLink className="w-3 h-3 text-slate-500" />
                           </a>
                         </td>

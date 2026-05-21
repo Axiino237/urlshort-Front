@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://urlshort-back.onrender.com';
+
 // Types representing database tables & UAM
 export type Role = 'SUPER_ADMIN' | 'ADMIN' | 'USER';
 
@@ -391,7 +393,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           }));
           
           const promises = initLinks.map(async (l) => {
-            l.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://localhost:5173/s/${l.shortCode}`;
+            l.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${BACKEND_URL}/s/${l.shortCode}`;
             return mapUrlToDb(l);
           });
           const mappedMockLinks = await Promise.all(promises);
@@ -765,7 +767,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const shortCode = cleanAlias || Math.random().toString(36).substring(2, 8);
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://localhost:5173/s/${shortCode}`;
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${BACKEND_URL}/s/${shortCode}`;
 
     const newUrl: ShortUrl = {
       id: 'link-' + Date.now(),
