@@ -42,12 +42,16 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
       script.setAttribute('data-zone', '241593');
       script.setAttribute('data-cfasync', 'false');
       script.async = true;
-      document.body.appendChild(script);
+      
+      script.onload = () => console.log("Monetag ad script loaded successfully.");
+      script.onerror = (err) => console.error("Monetag ad script failed to load:", err);
+      
+      document.head.appendChild(script);
     }
 
     return () => {
-      if (script && document.body.contains(script)) {
-        document.body.removeChild(script);
+      if (script && document.head.contains(script)) {
+        document.head.removeChild(script);
       }
     };
   }, [checking]);
