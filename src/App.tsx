@@ -73,7 +73,7 @@ const AppContent: React.FC = () => {
       case 'register':
         return <RegisterPage onNavigate={navigate} />;
       case 'ad-redirect':
-        return <AdRedirectPage onNavigate={navigate} />;
+        return <AdRedirectPage />;
       case 'dashboard':
         if (!user || user.role === 'USER') {
           return <LoginPage onNavigate={navigate} />;

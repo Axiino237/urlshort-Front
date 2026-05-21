@@ -3,17 +3,16 @@ import { useApp } from '../context/AppContext';
 import { 
   ShieldAlert, RefreshCw, MonitorPlay, CheckCircle2,
   ExternalLink, Eye, PlaySquare, AlertCircle, ArrowRight,
-  Globe, X, Flame, Zap
+  Globe, X, Flame, Zap, BookOpen
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 interface AdRedirectPageProps {
-  onNavigate: (page: string) => void;
 }
 
 type CPMProfile = 'US_AGGRESSIVE' | 'INDIA_BALANCED' | 'EUROPE_CLEAN';
 
-export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) => {
+export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
   const { links, recordAdView, settings, addFraudLog } = useApp();
   
   // URL routing queries
@@ -184,6 +183,13 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
       setStep(next);
       triggerStepInit(next);
     } else {
+      // Synchronously open Direct Link in a new tab to bypass popup blockers
+      try {
+        window.open("https://omg10.com/4/11037696", "_blank");
+      } catch (err) {
+        console.error("Failed to open direct link popup:", err);
+      }
+
       // Step 3 finished! Trigger Direct Link overlay representation before final route
       setShowDirectLinkOverlay(true);
       
@@ -265,10 +271,10 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
             VPN servers, duplicate automated click scripts, and custom head-less scrapers are strictly prohibited. Turn off proxy shields to continue.
           </p>
           <button 
-            onClick={() => onNavigate('landing')}
+            onClick={() => window.location.reload()}
             className="w-full py-2.5 bg-background-lighter hover:bg-background-card border border-white/10 rounded-xl text-xs font-bold text-slate-300 transition-all"
           >
-            Return Home
+            Retry Connection
           </button>
         </div>
       </div>
@@ -286,15 +292,12 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
           <div className="space-y-2">
             <h2 className="font-black text-2xl text-slate-200">Link Not Discovered</h2>
             <p className="text-xs text-slate-400 font-medium">
-              The short code code you entered is invalid or has been deactivated.
+              The short code you entered is invalid or has been deactivated.
             </p>
           </div>
-          <button 
-            onClick={() => onNavigate('landing')}
-            className="w-full py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 text-xs font-bold rounded-xl text-white shadow-neon-purple transition-all"
-          >
-            Return to Homepage
-          </button>
+          <div className="bg-background-card border border-white/5 rounded-xl p-4 text-xs font-semibold text-slate-400">
+            Please contact the link creator or publisher to obtain a valid redirection URL.
+          </div>
         </div>
       </div>
     );
@@ -524,6 +527,178 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
               </>
             )}
           </button>
+        </div>
+
+        {/* -------------------- DUMMY CONTENTS GAP FILLER -------------------- */}
+        <div className="pt-12 border-t border-white/5 space-y-8 text-left">
+          
+          {/* Section Header */}
+          <div className="flex items-center justify-between border-b border-white/5 pb-4">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-primary-400" />
+              <h3 className="font-extrabold text-lg text-slate-200">Axiino Technical Library & Knowledge Base</h3>
+            </div>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest hidden sm:inline">
+              Updated hourly • 6 minute read avg.
+            </span>
+          </div>
+
+          {/* Featured Article Deep-Dive */}
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/5 bg-gradient-to-br from-[#0c0c14] to-[#08080c] space-y-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-[9px] font-black text-accent-cyan uppercase tracking-wider bg-accent-cyan/10 border border-accent-cyan/20 px-3 py-1 rounded-md">
+                Featured Deep-Dive
+              </span>
+              <span className="text-xs font-semibold text-slate-400">By Lead Architect • May 2026</span>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="font-black text-xl sm:text-2xl text-slate-100 tracking-tight leading-tight">
+                A Comprehensive Guide to Modern Client-Side Caching Protocols & Service Worker Interception
+              </h4>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                Modern web applications are increasingly distributed and reliant on third-party API integrations, microservices, and client-side storage modules. When a visitor initializes a transaction or accesses a shared asset, the delay associated with fetching records from central storage nodes can degrade user satisfaction. By implementing standard caching strategies (like Stale-While-Revalidate, Cache-First, and Network-First), developers can ensure high-speed responses.
+              </p>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                These protocols are commonly registered using HTML5 Service Workers. When a client requests an asset, the Service Worker intercepts the request, serves the cached version immediately (minimizing latency to &lt; 10ms), and asynchronously fetches the latest version in the background to update the local store:
+              </p>
+            </div>
+
+            {/* Simulated Code Block */}
+            <div className="bg-[#050508] border border-white/5 rounded-xl p-4 font-mono text-[10px] sm:text-xs text-slate-400 overflow-x-auto space-y-1">
+              <div className="text-slate-500">// Service Worker intercepting fetch requests for offline support</div>
+              <div>self.addEventListener(<span className="text-accent-rose">'fetch'</span>, (event) =&gt; &#123;</div>
+              <div className="pl-4">event.respondWith(</div>
+              <div className="pl-8">caches.match(event.request).then((cachedResponse) =&gt; &#123;</div>
+              <div className="pl-12">const networkFetch = fetch(event.request).then((response) =&gt; &#123;</div>
+              <div className="pl-16">return caches.open(<span className="text-accent-rose">'v1'</span>).then((cache) =&gt; &#123;</div>
+              <div className="pl-20">cache.put(event.request, response.clone());</div>
+              <div className="pl-20">return response;</div>
+              <div className="pl-16">&#125;);</div>
+              <div className="pl-12">&#125;);</div>
+              <div className="pl-12">return cachedResponse || networkFetch;</div>
+              <div className="pl-8">&#125;)</div>
+              <div className="pl-4">);</div>
+              <div>&#125;);</div>
+            </div>
+
+            {/* List and Excerpt */}
+            <div className="space-y-3">
+              <h5 className="font-bold text-xs sm:text-sm text-slate-200">Key Benefits of Cache Routing & Service Workers:</h5>
+              <ul className="list-disc pl-5 space-y-2 text-xs text-slate-400 leading-relaxed font-medium">
+                <li>
+                  <strong className="text-slate-300">Latency Elimination:</strong> Serving pre-rendered components directly from the user's device cache cuts down connection handshake overhead and initial DNS lookup delay.
+                </li>
+                <li>
+                  <strong className="text-slate-300">Offline Resilience:</strong> Allows continuous application shell layout rendering and client-side database access even under volatile cellular network circumstances.
+                </li>
+                <li>
+                  <strong className="text-slate-300">Server Overhead Abatement:</strong> Restricts redundant asset queries from reaching the master server, reducing monthly cloud bills and improving bandwidth conservation.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Grid of 6 Tech Tutorials */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+            
+            {/* Article 1 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-accent-cyan uppercase tracking-wider bg-accent-cyan/10 border border-accent-cyan/20 px-2.5 py-0.5 rounded">
+                  Cloud Infrastructure
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  Understanding Edge Computing Network Redirection
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Edge routing ensures high-availability server loads by distributing traffic nodes globally. By fetching metadata closer to the physical consumer endpoints, we minimize propagation delays and round-trip TCP packets, allowing for high performance links.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">5 Min Read • Posted by Admin</div>
+            </div>
+
+            {/* Article 2 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-accent-rose uppercase tracking-wider bg-accent-rose/10 border border-accent-rose/20 px-2.5 py-0.5 rounded">
+                  Cybersecurity
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  How Modern Anti-Fraud Verification Gateways Protect Assets
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Evaluating requests via browser canvas profiling, device telemetry, and behavior heuristic scanner methods shields software services from automated scraper boots, proxy nodes, and distributed denial-of-service bot attacks.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">4 Min Read • Posted by SecOps</div>
+            </div>
+            
+            {/* Article 3 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-accent-emerald uppercase tracking-wider bg-accent-emerald/10 border border-accent-emerald/20 px-2.5 py-0.5 rounded">
+                  Web Development
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  Optimizing Frontend Asset Bundling with Rollup Engine
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Bundle sizing directly alters critical rendering indices. Implementing code-splitting patterns, lazy importing, and tree-shaking dead modules optimizes the DOM paint sequence for faster initial paint milestones.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">6 Min Read • Posted by Developer</div>
+            </div>
+
+            {/* Article 4 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-primary-400 uppercase tracking-wider bg-primary-400/10 border border-primary-400/20 px-2.5 py-0.5 rounded">
+                  System Ops
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  Designing High Performance REST APIs for Microservices
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Caching database calls with memory stores like Key-Value cache caches recurrent payload packets efficiently. Combining this with token-bucket rate limit headers stabilizes core services under heavy loads.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">7 Min Read • Posted by System Architect</div>
+            </div>
+
+            {/* Article 5 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-[#b45309] uppercase tracking-wider bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded">
+                  Database Admin
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  Horizontal Sharding Strategies for Relational Clusters
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  As database rows grow to billions, single-instance database clusters suffer significant read-write degradation. Partitioning schemas horizontally splits tables into multiple database instances, increasing throughput.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">8 Min Read • Posted by DBA Lead</div>
+            </div>
+
+            {/* Article 6 */}
+            <div className="glass-panel p-5 rounded-xl border border-white/5 bg-[#0a0a0f] space-y-3 flex flex-col justify-between">
+              <div className="space-y-2">
+                <span className="text-[9px] font-bold text-[#6d28d9] uppercase tracking-wider bg-purple-500/10 border border-purple-500/20 px-2.5 py-0.5 rounded">
+                  User Interface
+                </span>
+                <h4 className="font-bold text-sm text-slate-200">
+                  Improving UX using Dynamic Micro-animations
+                </h4>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Adding tiny micro-animations to user clicks and status changes gives visitors instant tactile verification feedback. It boosts visual engagement, reduces perceived load delays, and elevates design appeal.
+                </p>
+              </div>
+              <div className="text-[10px] text-slate-500 font-medium pt-2">5 Min Read • Posted by Designer</div>
+            </div>
+
+          </div>
         </div>
 
       </main>
