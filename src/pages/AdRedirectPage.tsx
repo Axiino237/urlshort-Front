@@ -12,6 +12,25 @@ interface AdRedirectPageProps {
 
 type CPMProfile = 'US_AGGRESSIVE' | 'INDIA_BALANCED' | 'EUROPE_CLEAN';
 
+const MonetagAd: React.FC<{ zone: string; id: string }> = ({ zone, id }) => {
+  useEffect(() => {
+    const container = document.getElementById(id);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const script = document.createElement('script');
+    script.src = "https://nap5k.com/tag.min.js";
+    script.dataset.zone = zone;
+    script.async = true;
+    script.setAttribute('data-cfasync', 'false');
+    
+    container.appendChild(script);
+  }, [zone, id]);
+
+  return <div id={id} className="w-full flex items-center justify-center overflow-hidden min-h-[50px]" />;
+};
+
 export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
   const { links, recordAdView, settings, addFraudLog } = useApp();
   
@@ -448,6 +467,9 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
                 <p className="text-xs text-slate-400 leading-relaxed font-medium">
                   We generate our publisher monetization payouts via programmatic ad impressions. Interact with premium sponsor services or verify the dynamic countdown to unlock your link routing rules.
                 </p>
+                <div className="pt-2 border-t border-white/5">
+                  <MonetagAd zone="11037695" id="monetag-ad-center-1" />
+                </div>
               </div>
             </div>
           </div>
@@ -477,7 +499,9 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
             <div className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col justify-between h-80 relative overflow-hidden">
               <div className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-4">Native Sponsor Widget</div>
               <div className="space-y-3">
-                <div className="h-28 bg-white/5 rounded-xl border border-white/5 shimmer"></div>
+                <div className="h-28 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center overflow-hidden">
+                  <MonetagAd zone="11037695" id="monetag-ad-native-1" />
+                </div>
                 <h4 className="font-bold text-sm text-slate-200">Cloud Web VPS Scalability</h4>
                 <p className="text-[10px] text-slate-400 leading-relaxed">Ultra high-speed bandwidth channels tailored for scale.</p>
               </div>
@@ -487,7 +511,9 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
             <div className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col justify-between h-80 relative overflow-hidden">
               <div className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-4">Native Sponsor Widget</div>
               <div className="space-y-3">
-                <div className="h-28 bg-white/5 rounded-xl border border-white/5 shimmer"></div>
+                <div className="h-28 bg-white/5 rounded-xl border border-white/5 flex items-center justify-center overflow-hidden">
+                  <MonetagAd zone="11037695" id="monetag-ad-native-2" />
+                </div>
                 <h4 className="font-bold text-sm text-slate-200">AI Design Tools</h4>
                 <p className="text-[10px] text-slate-400 leading-relaxed">Generate premium product mockups instantly using LLMs.</p>
               </div>
@@ -826,7 +852,7 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         <div className="fixed top-20 left-2 md:left-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
           <div className="flex items-center justify-between">
             <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
-              <Zap className="w-2.5 h-2.5" /> GFX Booster
+              <Zap className="w-2.5 h-2.5" /> GFX Booster Ad
             </span>
             <button 
               onClick={() => setShowTopLeftAd(false)}
@@ -835,20 +861,15 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
+          <div className="overflow-hidden rounded-lg bg-black/40 border border-white/5 py-1">
+            <MonetagAd zone="11037695" id="monetag-ad-corner-tl" />
+          </div>
           <a 
             href="https://sensi-pro-tawny.vercel.app/"
             target="_self"
-            className="block space-y-1 group"
+            className="block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 text-center hover:text-white"
           >
-            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
-              🚀 Increase Headshot %
-            </div>
-            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
-              Calibrate sensor latency & boost touch precision.
-            </p>
-            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
-              Launch Now
-            </span>
+            Launch Sensi Pro
           </a>
         </div>
       )}
@@ -858,7 +879,7 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         <div className="fixed top-20 right-2 md:right-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
           <div className="flex items-center justify-between">
             <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
-              <Zap className="w-2.5 h-2.5" /> Sensitivity
+              <Zap className="w-2.5 h-2.5" /> Sensitivity Ad
             </span>
             <button 
               onClick={() => setShowTopRightAd(false)}
@@ -867,20 +888,15 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
+          <div className="overflow-hidden rounded-lg bg-black/40 border border-white/5 py-1">
+            <MonetagAd zone="11037695" id="monetag-ad-corner-tr" />
+          </div>
           <a 
             href="https://sensi-pro-tawny.vercel.app/"
             target="_self"
-            className="block space-y-1 group"
+            className="block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 text-center hover:text-white"
           >
-            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
-              ⚡ Super Touch Sensi
-            </div>
-            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
-              Optimize mobile gaming GFX settings instantly.
-            </p>
-            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
-              Get App Free
-            </span>
+            Get App Free
           </a>
         </div>
       )}
@@ -890,7 +906,7 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         <div className="fixed bottom-4 left-2 md:left-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
           <div className="flex items-center justify-between">
             <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
-              <Zap className="w-2.5 h-2.5" /> Lag Fix
+              <Zap className="w-2.5 h-2.5" /> Lag Fix Ad
             </span>
             <button 
               onClick={() => setShowBottomLeftAd(false)}
@@ -899,20 +915,15 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
+          <div className="overflow-hidden rounded-lg bg-black/40 border border-white/5 py-1">
+            <MonetagAd zone="11037695" id="monetag-ad-corner-bl" />
+          </div>
           <a 
             href="https://sensi-pro-tawny.vercel.app/"
             target="_self"
-            className="block space-y-1 group"
+            className="block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 text-center hover:text-white"
           >
-            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
-              🎮 Stable 90 FPS Gaming
-            </div>
-            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
-              Remove gaming latency and screen stutter.
-            </p>
-            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
-              Optimize Device
-            </span>
+            Optimize Device
           </a>
         </div>
       )}
@@ -922,7 +933,7 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         <div className="fixed bottom-4 right-2 md:right-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
           <div className="flex items-center justify-between">
             <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
-              <Zap className="w-2.5 h-2.5" /> Pro Sensi
+              <Zap className="w-2.5 h-2.5" /> Pro Sensi Ad
             </span>
             <button 
               onClick={() => setShowBottomRightAd(false)}
@@ -931,20 +942,15 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
+          <div className="overflow-hidden rounded-lg bg-black/40 border border-white/5 py-1">
+            <MonetagAd zone="11037695" id="monetag-ad-corner-br" />
+          </div>
           <a 
             href="https://sensi-pro-tawny.vercel.app/"
             target="_self"
-            className="block space-y-1 group"
+            className="block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 text-center hover:text-white"
           >
-            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
-              🎯 Perfect Auto Headshot
-            </div>
-            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
-              Best GFX calibration and sensitivity values.
-            </p>
-            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
-              Download GFX
-            </span>
+            Download GFX
           </a>
         </div>
       )}

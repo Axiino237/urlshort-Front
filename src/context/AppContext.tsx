@@ -122,39 +122,6 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Initial Mock Users
-const MOCK_USERS: Omit<UserProfile, 'createdAt'>[] = [
-  { id: 'sa-1', email: 'superadmin@axiino.com', name: 'Alax Axiino', role: 'SUPER_ADMIN', status: 'ACTIVE', balance: 450000, totalEarned: 1200000 },
-  { id: 'adm-1', email: 'admin_vikram@axiino.com', name: 'Vikram Singh', role: 'ADMIN', status: 'ACTIVE', balance: 24500, totalEarned: 78000 },
-  { id: 'usr-1', email: 'user_rohan@axiino.com', name: 'Rohan Sharma', role: 'USER', adminId: 'adm-1', status: 'ACTIVE', balance: 3200, totalEarned: 12400 },
-  { id: 'usr-2', email: 'user_ananya@axiino.com', name: 'Ananya Roy', role: 'USER', adminId: 'adm-1', status: 'ACTIVE', balance: 5400, totalEarned: 18900 },
-  { id: 'usr-3', email: 'fraud_bot@axiino.com', name: 'Suspicious Bot Account', role: 'USER', adminId: 'adm-1', status: 'BANNED', balance: 0, totalEarned: 140 },
-];
-
-// Seeding RCB Details URLs
-const MOCK_LINKS: Omit<ShortUrl, 'id' | 'createdAt'>[] = [
-  { originalUrl: 'https://www.royalchallengers.com/ipl-2026/squad', shortCode: 'rcb-squad', customAlias: 'rcb-squad', title: 'RCB 2026 Team Player Squad Roster', qrCodeUrl: '', isActive: true, userId: 'usr-1' },
-  { originalUrl: 'https://www.royalchallengers.com/ipl-2026/schedule', shortCode: 'rcb-schedule', customAlias: 'rcb-schedule', title: 'IPL 2026 RCB Match Fixtures Schedule', qrCodeUrl: '', isActive: true, userId: 'usr-1' },
-  { originalUrl: 'https://www.royalchallengers.com/tickets/chinnaswamy', shortCode: 'rcb-tickets', customAlias: 'rcb-tickets', title: 'IPL RCB M. Chinnaswamy Stadium Ticket Booking', qrCodeUrl: '', isActive: true, userId: 'adm-1' },
-  { originalUrl: 'https://shop.royalchallengers.com/official-jersey-2026', shortCode: 'rcb-jersey', customAlias: 'rcb-jersey', title: 'Official RCB Fan Merchandise Match Jersey Store', qrCodeUrl: '', isActive: true, userId: 'usr-2' },
-];
-
-const MOCK_ANALYTICS: Omit<LinkAnalytic, 'id' | 'createdAt'>[] = [
-  { urlId: 'rcb-link-1', ip: '103.45.201.22', country: 'India', device: 'Mobile', browser: 'Chrome', referrer: 'Telegram', isValid: true, earnings: 4.5, cpm: 4.5 },
-  { urlId: 'rcb-link-1', ip: '45.120.45.89', country: 'United States', device: 'Desktop', browser: 'Safari', referrer: 'Twitter', isValid: true, earnings: 6.5, cpm: 6.5 },
-  { urlId: 'rcb-link-2', ip: '82.45.90.122', country: 'United Kingdom', device: 'Tablet', browser: 'Firefox', referrer: 'Direct', isValid: true, earnings: 5.0, cpm: 5.0 },
-  { urlId: 'rcb-link-3', ip: '192.168.1.1', country: 'India', device: 'Desktop', browser: 'Chrome', referrer: 'Direct', isValid: true, earnings: 4.0, cpm: 4.0 },
-  { urlId: 'rcb-link-3', ip: '172.56.21.99', country: 'Germany', device: 'Mobile', browser: 'Edge', referrer: 'Youtube', isValid: true, earnings: 7.2, cpm: 7.2 },
-];
-
-const MOCK_WITHDRAWALS: Omit<Withdrawal, 'id' | 'createdAt'>[] = [
-  { userId: 'adm-1', amount: 10000, commissionFee: 1000, netAmount: 9000, paymentMethod: 'UPI', paymentDetails: 'vikram@okaxis', status: 'APPROVED' },
-  { userId: 'usr-1', amount: 3000, commissionFee: 0, netAmount: 3000, paymentMethod: 'UPI', paymentDetails: 'rohan@okpaytm', status: 'APPROVED' },
-];
-
-const MOCK_FRAUD: Omit<FraudLog, 'id' | 'createdAt'>[] = [
-  { userId: 'usr-3', ip: '185.200.116.4', reason: 'BOT_TRAFFIC', userAgent: 'Mozilla/5.0 (compatible; HeadlessChrome/114.0.0.0)', details: 'Automated script detected trying to bypass redirect step verification on /rcb-squad.' },
-];
 
 // Default Action Permissions (User Access Management - UAM)
 const DEFAULT_PERMISSIONS: RolePermissions = {
@@ -317,63 +284,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (dbProfiles && !errProfiles) {
           activeProfiles = dbProfiles.map(mapProfileFromDb);
         }
-
-        // 2. Check if default preset profiles exist, if not, auto-seed them in DB
-        const hasSa = activeProfiles.some(p => p.email.toLowerCase() === 'superadmin@axiino.com');
-        const hasAdm = activeProfiles.some(p => p.email.toLowerCase() === 'admin_vikram@axiino.com');
-        
-        const presetsToInsert: any[] = [];
-        if (!hasSa) {
-          presetsToInsert.push({
-            id: 'sa-1',
-            email: 'superadmin@axiino.com',
-            name: 'Alax Axiino',
-            role: 'SUPER_ADMIN',
-            status: 'ACTIVE',
-            balance: 450000.0,
-            totalEarned: 1200000.0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          });
-        }
-        if (!hasAdm) {
-          presetsToInsert.push({
-            id: 'adm-1',
-            email: 'admin_vikram@axiino.com',
-            name: 'Vikram Singh',
-            role: 'ADMIN',
-            status: 'ACTIVE',
-            balance: 24500.0,
-            totalEarned: 78000.0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          });
-        }
-
-        // Add additional MOCK profiles to DB if missing completely
-        if (activeProfiles.length <= presetsToInsert.length) {
-          MOCK_USERS.forEach(m => {
-            if (m.id !== 'sa-1' && m.id !== 'adm-1') {
-              presetsToInsert.push({
-                ...m,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
-              });
-            }
-          });
-        }
-
-        if (presetsToInsert.length > 0) {
-          const { data: inserted, error: errInsert } = await supabase
-            .from('profiles')
-            .insert(presetsToInsert)
-            .select();
-          
-          if (inserted && !errInsert) {
-            const mappedInserted = inserted.map(mapProfileFromDb);
-            activeProfiles = [...activeProfiles.filter(ap => !mappedInserted.some(mi => mi.id === ap.id)), ...mappedInserted];
-          }
-        }
         setUsers(activeProfiles);
 
         // 3. Fetch Links / ShortUrls
@@ -382,30 +292,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .select('*');
         
         let activeUrls: ShortUrl[] = [];
-        if (dbUrls && dbUrls.length > 0 && !errUrls) {
+        if (dbUrls && !errUrls) {
           activeUrls = dbUrls.map(mapUrlFromDb);
-        } else {
-          // If no links, let's auto-seed RCB URLs in DB for initial setup
-          const initLinks = MOCK_LINKS.map((l, index) => ({
-            id: 'rcb-link-' + (index + 1),
-            ...l,
-            createdAt: new Date().toISOString()
-          }));
-          
-          const promises = initLinks.map(async (l) => {
-            l.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${BACKEND_URL}/s/${l.shortCode}`;
-            return mapUrlToDb(l);
-          });
-          const mappedMockLinks = await Promise.all(promises);
-          
-          const { data: insertedUrls, error: errInsertUrls } = await supabase
-            .from('urls')
-            .insert(mappedMockLinks)
-            .select();
-            
-          if (insertedUrls && !errInsertUrls) {
-            activeUrls = insertedUrls.map(mapUrlFromDb);
-          }
         }
         setLinks(activeUrls);
 
@@ -416,24 +304,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .order('created_at', { ascending: false });
         
         let activeAnalytics: LinkAnalytic[] = [];
-        if (dbAnalytics && dbAnalytics.length > 0 && !errAnalytics) {
+        if (dbAnalytics && !errAnalytics) {
           activeAnalytics = dbAnalytics.map(mapAnalyticFromDb);
-        } else {
-          // Auto-seed mock analytics in DB
-          const initAnalytics = MOCK_ANALYTICS.map((a, idx) => ({
-            id: 'an-rcb-' + (idx + 1),
-            ...a,
-            createdAt: new Date().toISOString()
-          }));
-          const mappedMockAnalytics = initAnalytics.map(mapAnalyticToDb);
-          const { data: insertedAnalytics, error: errInsertAnalytics } = await supabase
-            .from('analytics')
-            .insert(mappedMockAnalytics)
-            .select();
-          
-          if (insertedAnalytics && !errInsertAnalytics) {
-            activeAnalytics = insertedAnalytics.map(mapAnalyticFromDb);
-          }
         }
         setAnalytics(activeAnalytics);
 
@@ -444,24 +316,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .order('created_at', { ascending: false });
         
         let activeWithdrawals: Withdrawal[] = [];
-        if (dbWithdrawals && dbWithdrawals.length > 0 && !errWds) {
+        if (dbWithdrawals && !errWds) {
           activeWithdrawals = dbWithdrawals.map(mapWithdrawalFromDb);
-        } else {
-          // Auto-seed mock withdrawals in DB
-          const initWds = MOCK_WITHDRAWALS.map((w, idx) => ({
-            id: 'wd-' + (idx + 1),
-            ...w,
-            createdAt: new Date().toISOString()
-          }));
-          const mappedMockWds = initWds.map(mapWithdrawalToDb);
-          const { data: insertedWds, error: errInsertWds } = await supabase
-            .from('withdrawals')
-            .insert(mappedMockWds)
-            .select();
-          
-          if (insertedWds && !errInsertWds) {
-            activeWithdrawals = insertedWds.map(mapWithdrawalFromDb);
-          }
         }
         setWithdrawals(activeWithdrawals);
 
@@ -472,24 +328,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           .order('created_at', { ascending: false });
         
         let activeFraud: FraudLog[] = [];
-        if (dbFraud && dbFraud.length > 0 && !errFraud) {
+        if (dbFraud && !errFraud) {
           activeFraud = dbFraud.map(mapFraudFromDb);
-        } else {
-          // Auto-seed mock fraud in DB
-          const initFraud = MOCK_FRAUD.map((f, idx) => ({
-            id: 'fr-' + (idx + 1),
-            ...f,
-            createdAt: new Date().toISOString()
-          }));
-          const mappedMockFraud = initFraud.map(mapFraudToDb);
-          const { data: insertedFraud, error: errInsertFraud } = await supabase
-            .from('fraud_logs')
-            .insert(mappedMockFraud)
-            .select();
-          
-          if (insertedFraud && !errInsertFraud) {
-            activeFraud = insertedFraud.map(mapFraudFromDb);
-          }
         }
         setFraudLogs(activeFraud);
 
@@ -520,10 +360,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const localSysLogs = localStorage.getItem('ax_syslogs');
         if (localSysLogs) setSystemLogs(JSON.parse(localSysLogs));
         else {
-          const defaultLogs: SystemLog[] = [
-            { id: 'sl-1', operator: 'Platform Engine', role: 'SUPER_ADMIN', action: 'SYSTEM_SEED', details: 'Pre-seeded Royal Challengers Bangalore (RCB) Squad, Schedule, and Tickets links.', timestamp: new Date().toISOString() },
-            { id: 'sl-2', operator: 'Alax Axiino', role: 'SUPER_ADMIN', action: 'UAM_UPDATE', details: 'Initialized standard action permissions map for Super Admin, Admin, and User roles.', timestamp: new Date().toISOString() }
-          ];
+          const defaultLogs: SystemLog[] = [];
           setSystemLogs(defaultLogs);
           localStorage.setItem('ax_syslogs', JSON.stringify(defaultLogs));
         }
@@ -631,38 +468,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     let dbUser = matchProfile ? mapProfileFromDb(matchProfile) : null;
 
-    // Auto-seed presets instantly on click if they got cleared
-    if (!dbUser) {
-      if (email.toLowerCase() === 'superadmin@axiino.com') {
-        const seededSa = { 
-          id: 'sa-1', 
-          email: 'superadmin@axiino.com', 
-          name: 'Alax Axiino', 
-          role: 'SUPER_ADMIN' as const, 
-          status: 'ACTIVE', 
-          balance: 450000.0, 
-          totalEarned: 1200000.0, 
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        const { data } = await supabase.from('profiles').insert(seededSa).select().single();
-        if (data) dbUser = mapProfileFromDb(data);
-      } else if (email.toLowerCase() === 'admin_vikram@axiino.com') {
-        const seededAdm = { 
-          id: 'adm-1', 
-          email: 'admin_vikram@axiino.com', 
-          name: 'Vikram Singh', 
-          role: 'ADMIN' as const, 
-          status: 'ACTIVE', 
-          balance: 24500.0, 
-          totalEarned: 78000.0, 
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        const { data } = await supabase.from('profiles').insert(seededAdm).select().single();
-        if (data) dbUser = mapProfileFromDb(data);
-      }
-    }
+
 
     if (dbUser) {
       if (dbUser.status === 'BANNED') {
