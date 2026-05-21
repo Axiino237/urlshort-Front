@@ -33,25 +33,37 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
   const [popunderOpen, setPopunderOpen] = useState(false);
   const [showDirectLinkOverlay, setShowDirectLinkOverlay] = useState(false);
 
-  // Dynamically load Monetag script only inside this page structure when checks complete
+  // Dynamically load Monetag scripts only inside this page structure when checks complete
   useEffect(() => {
-    let script: HTMLScriptElement | null = null;
+    let multitagScript: HTMLScriptElement | null = null;
+    let bannerScript: HTMLScriptElement | null = null;
+
     if (!checking) {
-      script = document.createElement('script');
-      script.src = "https://quge5.com/88/tag.min.js";
-      script.setAttribute('data-zone', '241593');
-      script.setAttribute('data-cfasync', 'false');
-      script.async = true;
-      
-      script.onload = () => console.log("Monetag ad script loaded successfully.");
-      script.onerror = (err) => console.error("Monetag ad script failed to load:", err);
-      
-      document.head.appendChild(script);
+      // 1. Load Multitag (Popunder/Vignette/Push)
+      multitagScript = document.createElement('script');
+      multitagScript.src = "https://quge5.com/88/tag.min.js";
+      multitagScript.setAttribute('data-zone', '241593');
+      multitagScript.setAttribute('data-cfasync', 'false');
+      multitagScript.async = true;
+      multitagScript.onload = () => console.log("Monetag Multitag loaded successfully.");
+      multitagScript.onerror = (err) => console.error("Monetag Multitag failed to load:", err);
+      document.head.appendChild(multitagScript);
+
+      // 2. Load In-Page Push Banner
+      bannerScript = document.createElement('script');
+      bannerScript.src = "https://nap5k.com/tag.min.js";
+      bannerScript.dataset.zone = '11037695';
+      bannerScript.onload = () => console.log("Monetag Banner loaded successfully.");
+      bannerScript.onerror = (err) => console.error("Monetag Banner failed to load:", err);
+      document.body.appendChild(bannerScript);
     }
 
     return () => {
-      if (script && document.head.contains(script)) {
-        document.head.removeChild(script);
+      if (multitagScript && document.head.contains(multitagScript)) {
+        document.head.removeChild(multitagScript);
+      }
+      if (bannerScript && document.body.contains(bannerScript)) {
+        document.body.removeChild(bannerScript);
       }
     };
   }, [checking]);
