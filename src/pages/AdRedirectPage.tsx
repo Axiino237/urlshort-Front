@@ -33,6 +33,22 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = ({ onNavigate }) =>
   const [popunderOpen, setPopunderOpen] = useState(false);
   const [showDirectLinkOverlay, setShowDirectLinkOverlay] = useState(false);
 
+  // Dynamically load Monetag script only on this page
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "https://quge5.com/88/tag.min.js";
+    script.setAttribute('data-zone', '241593');
+    script.setAttribute('data-cfasync', 'false');
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
 
   // Extract query code
   useEffect(() => {
