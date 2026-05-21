@@ -339,26 +339,33 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         </div>
       </div>
 
-      {/* -------------------- TOP MULTITAG BANNER -------------------- */}
+      {/* -------------------- TOP SENSI PRO SPONSOR BANNER -------------------- */}
       <div className="w-full max-w-4xl px-6 pt-6">
-        <div className="glass-panel p-4 rounded-xl border border-white/5 text-center relative overflow-hidden select-none bg-gradient-to-r from-primary-950/20 via-[#101018] to-accent-cyan/5">
+        <a 
+          href="https://sensi-pro-tawny.vercel.app/" 
+          className="block glass-panel p-4 rounded-xl border border-accent-cyan/30 text-center relative overflow-hidden select-none bg-gradient-to-r from-accent-cyan/10 via-[#101018] to-primary-950/20 hover:border-accent-cyan/60 transition-all duration-300 group"
+        >
           <div className="absolute top-0 left-0 w-2 h-full bg-accent-cyan"></div>
           <div className="flex items-center justify-between text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">
-            <span>Monetag Multitag Placement #1084</span>
+            <span>Special Partner Placement</span>
             <span className="text-accent-cyan flex items-center gap-1 animate-pulse">
-              <Zap className="w-3 h-3" /> Auto-Optimized Ad Channel
+              <Zap className="w-3 h-3" /> Recommended Product
             </span>
           </div>
-          <div className="py-2 flex items-center justify-center gap-6">
+          <div className="py-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-left">
-              <div className="text-xs font-black text-slate-200">🚀 Exclusive Offer: Axiino Cloud Pro VPN</div>
-              <div className="text-[10px] text-slate-400">Unlock ultra-high bandwidth nodes worldwide. Zero logs preserved.</div>
+              <div className="text-xs sm:text-sm font-black text-slate-200 group-hover:text-accent-cyan transition-colors flex items-center gap-2">
+                ⚡ Try Sensi Pro GFX & Sensitivity Booster
+              </div>
+              <div className="text-[10px] text-slate-400 mt-1">
+                Maximize headshot percentage, optimize gaming FPS, and fine-tune your device touch sensitivity values.
+              </div>
             </div>
-            <button className="hidden sm:block px-3 py-1 bg-accent-cyan/10 hover:bg-accent-cyan/20 border border-accent-cyan/30 text-accent-cyan font-bold rounded-lg text-[9px] uppercase tracking-wider transition-all">
-              Launch Agent
-            </button>
+            <span className="px-4 py-1.5 bg-accent-cyan text-slate-950 font-extrabold rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-neon-cyan group-hover:scale-105 group-hover:bg-accent-cyan/95">
+              Launch Sensi Pro
+            </span>
           </div>
-        </div>
+        </a>
       </div>
 
       {/* -------------------- MAIN PAGE CONTAINER -------------------- */}
@@ -443,15 +450,23 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
         {step === 2 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             {/* Native Banner Columns */}
-            <div className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col justify-between h-80 relative overflow-hidden">
-              <div className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-4">Native Sponsor Widget</div>
+            <a 
+              href="https://sensi-pro-tawny.vercel.app/"
+              className="block glass-panel p-6 rounded-2xl border border-accent-cyan/20 hover:border-accent-cyan/40 bg-gradient-to-b from-[#0a0a0f] to-[#0c0c14] flex flex-col justify-between h-80 relative overflow-hidden group transition-all"
+            >
+              <div className="text-[9px] text-accent-cyan uppercase font-bold tracking-widest mb-4">Featured App Partner</div>
               <div className="space-y-3">
-                <div className="h-28 bg-white/5 rounded-xl border border-white/5 shimmer"></div>
-                <h4 className="font-bold text-sm text-slate-200">Premium Crypto Ledger Wallet</h4>
-                <p className="text-[10px] text-slate-400 leading-relaxed">Secure digital asset channels with multi-signature hardware modules.</p>
+                <div className="h-28 bg-accent-cyan/5 rounded-xl border border-accent-cyan/15 flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-white/2 shimmer"></div>
+                  <Zap className="w-12 h-12 text-accent-cyan animate-pulse" />
+                </div>
+                <h4 className="font-bold text-sm text-slate-200 group-hover:text-accent-cyan transition-colors">Sensi Pro Gaming Tool</h4>
+                <p className="text-[10px] text-slate-400 leading-relaxed">Optimize your mobile gaming experience. Calibrate sensor latency, configure custom GFX files, and boost touch precision.</p>
               </div>
-              <span className="text-[9px] text-accent-cyan font-extrabold mt-4">Programmatic Banner Placed</span>
-            </div>
+              <span className="text-[9px] text-accent-cyan font-extrabold mt-4 flex items-center gap-1 group-hover:underline">
+                Get Sensi Pro Free <ExternalLink className="w-3 h-3" />
+              </span>
+            </a>
 
             <div className="glass-panel p-6 rounded-2xl border border-white/5 flex flex-col justify-between h-80 relative overflow-hidden">
               <div className="text-[9px] text-slate-500 uppercase font-bold tracking-widest mb-4">Native Sponsor Widget</div>
