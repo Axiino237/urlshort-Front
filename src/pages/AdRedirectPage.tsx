@@ -32,6 +32,12 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
   const [popunderOpen, setPopunderOpen] = useState(false);
   const [showDirectLinkOverlay, setShowDirectLinkOverlay] = useState(false);
 
+  // Floating Corner Ads visibility states
+  const [showTopLeftAd, setShowTopLeftAd] = useState(true);
+  const [showTopRightAd, setShowTopRightAd] = useState(true);
+  const [showBottomLeftAd, setShowBottomLeftAd] = useState(true);
+  const [showBottomRightAd, setShowBottomRightAd] = useState(true);
+
   // Dynamically load Monetag scripts only inside this page structure when checks complete
   useEffect(() => {
     let multitagScript: HTMLScriptElement | null = null;
@@ -520,29 +526,6 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
           </div>
         )}
 
-        {/* -------------------- CONTINUE BUTTON DISABLED/ENABLED -------------------- */}
-        <div className="flex items-center justify-center pt-2 select-none">
-          <button
-            onClick={handleNextStep}
-            disabled={timer > 0 || showVignette}
-            className={`px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all duration-300 ${
-              timer > 0 || showVignette
-                ? 'bg-white/5 border border-white/5 text-slate-500 cursor-not-allowed' 
-                : 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600 text-white shadow-neon-purple hover:scale-105 active:scale-95'
-            }`}
-          >
-            {showVignette ? (
-              <span>Close Sponsored Ad to Unlock</span>
-            ) : timer > 0 ? (
-              <span>Locked: Wait {timer}s</span>
-            ) : (
-              <>
-                <span>{step === 3 ? 'Unlock Link' : 'Continue to Next Step'}</span>
-                {step === 3 ? <CheckCircle2 className="w-5 h-5 text-accent-emerald animate-bounce" /> : <ArrowRight className="w-5 h-5" />}
-              </>
-            )}
-          </button>
-        </div>
 
         {/* -------------------- DUMMY CONTENTS GAP FILLER -------------------- */}
         <div className="pt-12 border-t border-white/5 space-y-8 text-left">
@@ -701,6 +684,30 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
           </div>
         </div>
 
+        {/* -------------------- CONTINUE BUTTON DISABLED/ENABLED -------------------- */}
+        <div className="flex items-center justify-center pt-8 pb-4 select-none">
+          <button
+            onClick={handleNextStep}
+            disabled={timer > 0 || showVignette}
+            className={`px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all duration-300 ${
+              timer > 0 || showVignette
+                ? 'bg-white/5 border border-white/5 text-slate-500 cursor-not-allowed' 
+                : 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600 text-white shadow-neon-purple hover:scale-105 active:scale-95'
+            }`}
+          >
+            {showVignette ? (
+              <span>Close Sponsored Ad to Unlock</span>
+            ) : timer > 0 ? (
+              <span>Locked: Wait {timer}s</span>
+            ) : (
+              <>
+                <span>{step === 3 ? 'Unlock Link' : 'Continue to Next Step'}</span>
+                {step === 3 ? <CheckCircle2 className="w-5 h-5 text-accent-emerald animate-bounce" /> : <ArrowRight className="w-5 h-5" />}
+              </>
+            )}
+          </button>
+        </div>
+
       </main>
 
       {/* -------------------- FOOTER AD BANNER -------------------- */}
@@ -766,39 +773,178 @@ export const AdRedirectPage: React.FC<AdRedirectPageProps> = () => {
 
       {/* -------------------- MOCK FLOATING ONCLICK POPUNDER WINDOW -------------------- */}
       {popunderOpen && (
-        <div className="fixed bottom-4 right-4 z-50 w-80 glass-panel border-accent-cyan/30 p-5 rounded-2xl shadow-neon-cyan flex flex-col space-y-4 animate-slideIn select-none text-left">
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fadeIn"
+          onClick={(e) => {
+            e.stopPropagation();
+            setPopunderOpen(false);
+          }}
+        >
+          <div 
+            className="w-80 glass-panel border-accent-cyan/30 p-5 rounded-2xl shadow-neon-cyan flex flex-col space-y-4 animate-scaleUp select-none text-left bg-gradient-to-b from-[#0a0a0f] to-[#0c0c14]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
+                <Zap className="w-3 h-3" /> Monetag Onclick Popunder Window
+              </span>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPopunderOpen(false);
+                }}
+                className="text-slate-500 hover:text-slate-300 transition-colors outline-none"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="text-xs font-black text-slate-200">🎁 Congratulations! Reward Selections Assigned</div>
+              <p className="text-[10px] text-slate-400 leading-relaxed">
+                Your publisher traffic qualify checks cleared successfully. Click below to secure a simulated CPM promotion bonus.
+              </p>
+            </div>
+
+            <a 
+              href="https://sensi-pro-tawny.vercel.app/"
+              onClick={() => {
+                setPopunderOpen(false);
+                confetti({ particleCount: 30, spread: 40 });
+              }}
+              className="w-full py-2 bg-gradient-to-r from-accent-cyan to-indigo-600 hover:from-accent-cyan/90 text-center rounded-xl text-[10px] font-bold text-white block shadow-neon-cyan hover:scale-[1.01] active:scale-95 transition-all"
+            >
+              Claim Instant Balance Boost
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------- FLOATING CORNER ADS (SENSI PRO) -------------------- */}
+      {/* Top Left Corner Ad */}
+      {showTopLeftAd && (
+        <div className="fixed top-20 left-2 md:left-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
           <div className="flex items-center justify-between">
-            <span className="text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
-              <Zap className="w-3 h-3" /> Monetag Onclick Popunder Window
+            <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
+              <Zap className="w-2.5 h-2.5" /> GFX Booster
             </span>
             <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setPopunderOpen(false);
-              }}
-              className="text-slate-500 hover:text-slate-300 transition-colors outline-none"
+              onClick={() => setShowTopLeftAd(false)}
+              className="text-slate-500 hover:text-slate-300 transition-colors p-0.5"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
-          
-          <div className="space-y-2">
-            <div className="text-xs font-black text-slate-200">🎁 Congratulations! Reward Selections Assigned</div>
-            <p className="text-[10px] text-slate-400 leading-relaxed">
-              Your publisher traffic qualify checks cleared successfully. Click below to secure a simulated CPM promotion bonus.
-            </p>
-          </div>
-
           <a 
-            href="#cpm-boost"
-            onClick={(e) => {
-              e.preventDefault();
-              setPopunderOpen(false);
-              confetti({ particleCount: 30, spread: 40 });
-            }}
-            className="w-full py-2 bg-gradient-to-r from-accent-cyan to-indigo-600 hover:from-accent-cyan/90 text-center rounded-xl text-[10px] font-bold text-white block shadow-neon-cyan hover:scale-[1.01] active:scale-95 transition-all"
+            href="https://sensi-pro-tawny.vercel.app/"
+            target="_self"
+            className="block space-y-1 group"
           >
-            Claim Instant Balance Boost
+            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
+              🚀 Increase Headshot %
+            </div>
+            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
+              Calibrate sensor latency & boost touch precision.
+            </p>
+            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
+              Launch Now
+            </span>
+          </a>
+        </div>
+      )}
+
+      {/* Top Right Corner Ad */}
+      {showTopRightAd && (
+        <div className="fixed top-20 right-2 md:right-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
+              <Zap className="w-2.5 h-2.5" /> Sensitivity
+            </span>
+            <button 
+              onClick={() => setShowTopRightAd(false)}
+              className="text-slate-500 hover:text-slate-300 transition-colors p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+          <a 
+            href="https://sensi-pro-tawny.vercel.app/"
+            target="_self"
+            className="block space-y-1 group"
+          >
+            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
+              ⚡ Super Touch Sensi
+            </div>
+            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
+              Optimize mobile gaming GFX settings instantly.
+            </p>
+            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
+              Get App Free
+            </span>
+          </a>
+        </div>
+      )}
+
+      {/* Bottom Left Corner Ad */}
+      {showBottomLeftAd && (
+        <div className="fixed bottom-4 left-2 md:left-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
+              <Zap className="w-2.5 h-2.5" /> Lag Fix
+            </span>
+            <button 
+              onClick={() => setShowBottomLeftAd(false)}
+              className="text-slate-500 hover:text-slate-300 transition-colors p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+          <a 
+            href="https://sensi-pro-tawny.vercel.app/"
+            target="_self"
+            className="block space-y-1 group"
+          >
+            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
+              🎮 Stable 90 FPS Gaming
+            </div>
+            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
+              Remove gaming latency and screen stutter.
+            </p>
+            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
+              Optimize Device
+            </span>
+          </a>
+        </div>
+      )}
+
+      {/* Bottom Right Corner Ad */}
+      {showBottomRightAd && (
+        <div className="fixed bottom-4 right-2 md:right-4 z-40 w-32 md:w-44 glass-panel border-accent-cyan/30 p-2 md:p-3 rounded-xl shadow-neon-cyan flex flex-col space-y-1.5 md:space-y-2 select-none text-left bg-gradient-to-br from-accent-cyan/15 via-[#0e0e15] to-[#08080c]">
+          <div className="flex items-center justify-between">
+            <span className="text-[8px] md:text-[9px] uppercase font-bold text-accent-cyan tracking-wider flex items-center gap-1">
+              <Zap className="w-2.5 h-2.5" /> Pro Sensi
+            </span>
+            <button 
+              onClick={() => setShowBottomRightAd(false)}
+              className="text-slate-500 hover:text-slate-300 transition-colors p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+          <a 
+            href="https://sensi-pro-tawny.vercel.app/"
+            target="_self"
+            className="block space-y-1 group"
+          >
+            <div className="text-[10px] md:text-xs font-black text-slate-200 group-hover:text-accent-cyan transition-colors">
+              🎯 Perfect Auto Headshot
+            </div>
+            <p className="text-[8px] md:text-[9px] text-slate-400 leading-tight">
+              Best GFX calibration and sensitivity values.
+            </p>
+            <span className="inline-block text-[8px] md:text-[9px] text-accent-cyan font-bold underline mt-1 group-hover:text-white">
+              Download GFX
+            </span>
           </a>
         </div>
       )}
